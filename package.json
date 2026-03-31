@@ -21,6 +21,8 @@
     "@astrojs/vercel": "10.0.3",
     "@fontsource-variable/geist": "5.2.8",
     "@tailwindcss/vite": "4.2.2",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "astro": "6.0.8",
     "highlight.js": "11.11.1",
     "lucide-react": "1.7.0",
