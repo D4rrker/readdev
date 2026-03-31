@@ -16,7 +16,14 @@ export const useExplanation = () => {
         body: JSON.stringify({ mode, input: value }),
       });
 
-      if (!res.ok || !res.body) throw new Error();
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || 'Error de conexión con el servidor.'
+        );
+      }
+
+      if (!res.body) throw new Error('No se recibió respuesta del servidor.');
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -44,11 +51,15 @@ export const useExplanation = () => {
           }
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'Algo salió mal. Inténtalo de nuevo.';
       setStream((prev) => ({
         ...prev,
         loading: false,
-        error: err.message || 'Algo salió mal. Inténtalo de nuevo.',
+        error: errorMessage,
       }));
     }
   }, []);
