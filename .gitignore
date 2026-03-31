@@ -3,6 +3,8 @@ dist/
 
 # generated types
 .astro/
+.vscode/
+.vercel/
 
 # dependencies
 node_modules/
@@ -22,3 +24,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+.vercel
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+.eslintcache

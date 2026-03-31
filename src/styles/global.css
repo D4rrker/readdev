@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@import 'highlight.js/styles/github-dark.css';
+
+@layer base {
+  body {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
+    background-color: #0e0f11;
+    color: #e8e4dc;
+    min-height: 100vh;
+  }
+
+  .hljs {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  pre code.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  ::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2d38;
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c97d4e;
+  }
+}
+
+@theme {
+  --animate-fade-in-up: fade-in-up 0.4s ease-out forwards;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

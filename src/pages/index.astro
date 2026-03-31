@@ -1,11 +1,89 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from '@/layouts/Layout.astro';
+import DocForm from '@/components/DocForm.tsx';
+import { Info } from 'lucide-react';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const title = 'ReadDev — Documentación técnica explicada con IA';
+const description =
+  'Optimiza tu aprendizaje. ReadDev traduce documentación compleja y fragmentos de código en explicaciones sencillas y ejemplos prácticos al instante.';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={title} description={description}>
+  <div class="flex h-dvh flex-col px-8 py-6">
+    <nav class="mb-8 flex items-center justify-between">
+      <span class="text-[15px] font-medium tracking-tight text-[#e8e4dc]">
+        Read<span class="text-[#c97d4e]">Dev</span>
+      </span>
+
+      <button
+        id="toggle-btn"
+        class="rounded-lg border border-[#1e2028] bg-[#13141a] px-3 py-1.5 font-mono text-xs text-[#b8b4ac] transition-colors hover:text-[#c97d4e] lg:hidden"
+      >
+        Ocultar formulario
+      </button>
+    </nav>
+
+    <div
+      class="grid min-h-0 grid-cols-1 gap-4 lg:flex-1 lg:grid-cols-[380px_1fr] lg:gap-8"
+    >
+      <div class="flex flex-col gap-y-4 lg:justify-between">
+        <div
+          id="sidebar-content"
+          class="flex flex-col gap-6 transition-all duration-300"
+        >
+          <div>
+            <h1
+              class="mb-2 text-2xl leading-tight font-medium tracking-tight text-[#e8e4dc]"
+            >
+              Entiende cualquier<br />documentación en segundos
+            </h1>
+            <p class="text-sm leading-relaxed text-gray-500">
+              Pega una URL o código complejo y obtén una explicación clara con
+              ejemplos prácticos listos para implementar.
+            </p>
+          </div>
+          <DocForm client:load />
+        </div>
+
+        <div class="flex items-center gap-2 px-1 text-gray-500">
+          <Info className="text- h-4 w-4" />
+          <span
+            class="font-mono text-[11px] tracking-wide text-pretty uppercase"
+          >
+            Sesión sin contexto • Consultas independientes
+          </span>
+        </div>
+      </div>
+
+      <div
+        id="result-panel"
+        class="min-h-0 overflow-y-auto p-1 pb-8 lg:rounded-xl lg:border lg:border-[#1e2028] lg:bg-[#13141a] lg:p-6"
+      >
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  const btn = document.getElementById('toggle-btn');
+  const content = document.getElementById('sidebar-content');
+
+  if (btn && content) {
+    btn.addEventListener('click', () => {
+      content.classList.toggle('hidden');
+
+      if (content.classList.contains('hidden')) {
+        btn.textContent = 'Mostrar formulario';
+      } else {
+        btn.textContent = 'Ocultar formulario';
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        content.classList.remove('hidden');
+        btn.textContent = 'Ocultar formulario';
+      }
+    });
+  }
+</script>
