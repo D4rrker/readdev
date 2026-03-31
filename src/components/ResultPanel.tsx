@@ -27,10 +27,10 @@ export default function ResultPanel({ stream }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_500px]">
+    <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[1fr_500px]">
       <div className="flex flex-col gap-4">
         {stream.error && (
-          <p className="rounded-lg px-4 py-2.5 font-mono text-sm text-red-400">
+          <p className="absolute top-0 w-full rounded-lg px-4 py-2.5 text-center font-mono text-sm text-red-400">
             {stream.error}
           </p>
         )}
