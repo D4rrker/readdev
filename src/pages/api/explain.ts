@@ -1,36 +1,25 @@
 export const prerender = false;
 
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
-
 import promptTemplate from '@/prompts/explain.md?raw';
 import { extractMainContent } from '@/lib/streamHelpers';
 import { client } from '@/lib/deepseek';
 import { fetchBraveSearch } from '@/lib/brave';
 import { searchTool } from '@/utils/toolsAI';
 import type { APIRoute } from 'astro';
-
-const redis = new Redis({
-  url: import.meta.env.KV_REST_API_URL,
-  token: import.meta.env.KV_REST_API_TOKEN,
-});
-
-const ratelimit = new Ratelimit({
-  redis: redis,
-  limiter: Ratelimit.slidingWindow(5, '24 h'),
-});
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export const POST: APIRoute = async ({ request }) => {
   const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1';
-  const { success } = await ratelimit.limit(ip);
 
-  if (!success) {
+  if (checkRateLimit(ip)) {
     return new Response(
       JSON.stringify({
-        type: 'error',
-        message: 'Límite diario alcanzado. Inténtalo de nuevo mañana.',
+        message: 'Demasiadas peticiones, inténtelo de nuevo en 2 minutos',
       }),
-      { status: 429 }
+      {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 
