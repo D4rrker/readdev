@@ -64,9 +64,7 @@ test.describe('Generación de explicaciones y manejo de errores', () => {
     const resultPanel = page.locator('#result-panel');
     await expect(resultPanel).toBeVisible();
 
-    await expect(resultPanel).toContainText(
-      'Algo salió mal. Inténtalo de nuevo.'
-    );
+    await expect(resultPanel).toContainText('Internal Server Error simulado');
   });
 
   test('Debe bloquear temas fuera de contexto y mostrar el error de la IA', async ({

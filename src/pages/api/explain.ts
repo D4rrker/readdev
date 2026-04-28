@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { mode, input } = await request.json();
 
   if (!input) {
-    return new Response(JSON.stringify({ error: 'Input requerido' }), {
+    return new Response(JSON.stringify({ message: 'Input requerido' }), {
       status: 400,
     });
   }
@@ -46,16 +46,19 @@ export const POST: APIRoute = async ({ request }) => {
       if (content.length < 100) {
         return new Response(
           JSON.stringify({
-            error:
+            message:
               'No se pudo extraer contenido de la URL. Prueba pegando el texto directamente.',
           }),
           { status: 400 }
         );
       }
     } catch {
-      return new Response(JSON.stringify({ error: 'No se pudo leer la URL' }), {
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({ message: 'No se pudo leer la URL' }),
+        {
+          status: 400,
+        }
+      );
     }
   }
 

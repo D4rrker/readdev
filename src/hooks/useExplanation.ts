@@ -18,9 +18,8 @@ export const useExplanation = () => {
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(
-          errorData.message || 'Error de conexión con el servidor.'
-        );
+        const serverMessage = errorData.message || errorData.error;
+        throw new Error(serverMessage || 'Algo salió mal. Inténtalo de nuevo.');
       }
 
       if (!res.body) throw new Error('No se recibió respuesta del servidor.');
@@ -52,6 +51,7 @@ export const useExplanation = () => {
         }
       }
     } catch (err: unknown) {
+      const isNetworkError = err instanceof TypeError;
       const errorMessage =
         err instanceof Error
           ? err.message
@@ -59,7 +59,9 @@ export const useExplanation = () => {
       setStream((prev) => ({
         ...prev,
         loading: false,
-        error: errorMessage,
+        error: isNetworkError
+          ? 'Error de conexión con el servidor.'
+          : errorMessage,
       }));
     }
   }, []);
